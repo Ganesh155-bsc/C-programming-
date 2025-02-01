@@ -1,1 +1,204 @@
-nndnsndncsmmsmd
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+	int data;
+	struct node *next;
+};
+struct node *start=NULL,*temp=NULL,*newnode,*prev,*forw,*next;
+void create_ll();
+void insert_first();
+void insert_last();	
+void insert_middle();
+void delete_first();
+void delete_last();
+void delete_middle();
+void display_ll();
+void count_node();
+void searching_ll();
+int main(){
+	int choice;
+	do{
+	printf("\n*****Linked List Menu******\n");
+	printf("------------------------\n");
+	printf("01)Create linkeds list\n");
+	printf("02)Add a node on first\n");
+	printf("03)Add a node on end\n");
+	printf("04)Add a node on middle\n");
+	printf("05)Delete from first\n");
+	printf("06)Delete from last\n");
+	printf("07)Delete from middle\n");
+	printf("08)Dsiplay_ll\n");
+	printf("09)Count Total nodes\n");
+	printf("10)Seraching_ll\n");
+	printf("11)Exit\n");
+	printf("-------------------------\n\n");
+	printf("Enter your choice: ");
+	scanf("%d",&choice);
+	
+	switch(choice){
+		case 1: create_ll(); break;
+		case 2:	insert_first();	break;
+		case 3: insert_last();	break;
+		case 4:	insert_middle();	break;
+		case 5:	delete_first();	break;
+		case 6:	delete_last();	break;
+		case 7:	delete_middle();	break;
+		case 8:	display_ll();	break;
+		case 9:	count_node();	break;
+		case 10: searching_ll();	break;	
+		default :printf("Invalid choice");
+	}
+	}while(choice!=11);
+	return 0;
+}
+void create_ll(){
+	char ch;
+	int n;
+	printf("Enter an element: \t");
+	scanf("%d",&n);
+	start=(struct node *)malloc(sizeof(struct node));
+	start->data=n;
+	start->next=NULL;
+	temp=start;
+	printf("\nDo you Want to continue: ");
+	ch=getch();
+	while(ch=='Y'||ch=='y'){
+		printf("\nEnter next element: ");
+		scanf("%d",&n);
+		newnode=(struct node *)malloc(sizeof(struct node));
+		newnode->data=n;
+		newnode->next=NULL;
+		temp->next=newnode;
+		temp=temp->next;
+		printf("\nDo you Want to continue: ");
+		ch=getche();		
+	}	
+}
+void display_ll(){
+	if(start==NULL)	printf("List is alredy empty");
+	else{
+		temp=start;
+		while(temp!=NULL){
+			printf("%d\t",temp->data);
+			temp=temp->next;
+		}
+	}
+}
+void insert_first(){
+	int n;
+	if(start==NULL)	printf("List is empty");
+	else{
+		printf("Enter the element for first: ");
+		scanf("%d",&n);
+		newnode=(struct node *)malloc(sizeof(struct node));
+		newnode->data=n;
+		newnode->next=NULL;
+		newnode->next=start;
+		start=newnode;
+	}	
+}
+void insert_last(){
+	int n;
+	if(start==NULL)	printf("List is empty");
+	else{
+		printf("Enter the element for last: ");
+		scanf("%d",&n);
+		temp=start;
+		newnode=(struct node *)malloc(sizeof(struct node));
+		newnode->data=n;
+		newnode->next=NULL;
+		while(temp->next !=NULL)	temp=temp->next;
+		temp->next=newnode;	
+		}
+	}
+void insert_middle(){
+	int n,pos,i;
+	if(start==NULL)	printf("List is empty");
+	else{
+		printf("Enter the element for middle: ");
+		scanf("%d",&n);
+		newnode=(struct node *)malloc(sizeof(struct node));
+		newnode->data=n;
+		newnode->next=NULL;
+		printf("Enter the position where add: ");
+		scanf("%d",&pos);
+		forw=start;
+		while(i<pos){
+			prev=forw;
+			forw=forw->next;
+			i++;
+		}
+		prev->next=newnode;
+		newnode->next=forw;		
+	}
+}
+void delete_first(){
+	if(start==NULL)	printf("List is empty");
+	else{
+		temp=start;
+		start=start->next;
+		printf("Delete node %d",temp->data);
+		free(temp);
+	}
+}
+void delete_last(){
+	if(start==NULL)	printf("List is empty");
+	else{
+		temp=start;
+		while(temp->next!=NULL){
+			prev=temp;
+			temp=temp->next;
+		}
+		prev->next=NULL;
+		printf("Delete node %d",temp->data);
+		free(temp);
+	}
+}
+void delete_middle(){
+	int pos,i=1;
+	if(start==NULL)	printf("List is empty");
+	else{
+		printf("Enter the postion for delete elemnt: ");
+		scanf("%d",&pos);
+		temp=start;
+		while(i<pos){
+			prev=temp;
+			temp=temp->next;
+			i++;
+		}
+		next=temp->next;
+		prev->next=next;
+		printf("Delete node %d",temp->data);
+		free(temp);
+	}
+}
+void count_node(){
+	int count=0;
+	if(start==NULL)	printf("List is empty");
+	else{
+		temp=start;
+		while(temp!=NULL){
+			count++;
+			temp=temp->next;
+		}
+		printf("Total counting node is: %d",count);
+	}	
+}
+void searching_ll(){
+	int s,flag=0;
+	if(start==NULL)	printf("List is empty");
+	else{
+		printf("Enter element for searching: ");
+		scanf("%d",&s);
+		temp=start;
+		while(temp!=NULL){
+			if(temp->data==s){
+				flag=1;
+				break;
+			}
+			temp=temp->next;
+		}
+		if(flag==1)	printf("Search is success");		
+		else	printf("Search is unsuccess");	
+	}
+}
