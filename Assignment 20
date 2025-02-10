@@ -1,0 +1,38 @@
+Q) Write a program in C to input a list of integers and sort the list using bubble sort. 
+
+#include<stdio.h>
+#define MAX 10
+
+int main() {
+    int temp, n, i, j;
+    int arr[MAX];
+
+    printf("Enter the number of elements (max %d): ", MAX);
+    scanf("%d", &n);
+
+    // Check for valid input size
+    if (n > MAX || n <= 0) {
+        printf("Invalid input! The number of elements should be between 1 and %d.\n", MAX);
+        return 1; // Exit with an error
+    }
+
+    printf("Enter the elements: ");
+    for (i = 0; i < n; i++)	scanf("%d", &arr[i]);
+    
+    // Bubble sort logic
+    for (i = 0; i < n - 1; i++) { // n-1 passes
+        for (j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    printf("Sorted array: ");
+    for (i = 0; i < n; i++)	printf("%d\t", arr[i]);
+    printf("\n");
+
+    return 0;
+}
