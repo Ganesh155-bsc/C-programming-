@@ -1,0 +1,83 @@
+Q)Write a program in C to create a singly linked list with even number of elements. Then swap the odd and even positioned elements to create a new list. Display both the original and changed list.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *start = NULL, *temp = NULL, *newnode;
+
+void create_even_ll();
+void display_ll(struct node *head);
+void swap_odd_even();
+
+int main() {
+    printf("Creating an even-length linked list:\n");
+    create_even_ll();
+    
+    printf("\nOriginal Linked List:\n");
+    display_ll(start);
+    
+    swap_odd_even();
+    
+    printf("\nLinked List after swapping odd and even positioned nodes:\n");
+    display_ll(start);
+    
+    return 0;
+}
+
+void create_even_ll() {
+    int n, count = 0;
+    char ch;
+    do {
+        printf("Enter an element: ");
+        scanf("%d", &n);
+        newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->data = n;
+        newnode->next = NULL;
+        
+        if (start == NULL) {
+            start = newnode;
+            temp = start;
+        } else {
+            temp->next = newnode;
+            temp = newnode;
+        }
+        
+        count++;
+        printf("Do you want to continue (Y/N)? ");
+        scanf(" %c", &ch);
+        
+    } while ((ch == 'Y' || ch == 'y') || count % 2 != 0); // Ensures even-length list
+}
+
+void display_ll(struct node *head) {
+    if (head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    struct node *temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+void swap_odd_even() {
+    if (start == NULL || start->next == NULL) {
+        return;
+    }
+    
+    struct node *temp = start;
+    while (temp != NULL && temp->next != NULL) {
+        int swap = temp->data;
+        temp->data = temp->next->data;
+        temp->next->data = swap;
+        temp = temp->next->next;
+    }
+}
