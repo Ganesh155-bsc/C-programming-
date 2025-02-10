@@ -1,0 +1,94 @@
+Q) Write a program in C to implement the following matrix operations : 
+
+  (a) Multiplication of two matrices
+______________________________________________________________________________
+#include <stdio.h>
+int main() {
+    int i, j, k;
+    int matrix1[2][2], matrix2[2][2], result[2][2] = {0};
+
+    // Input for the first matrix
+    printf("Enter the elements of the first 2x2 matrix:\n");
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            scanf("%d", &matrix1[i][j]);
+        }
+    }
+
+    // Input for the second matrix
+    printf("Enter the elements of the second 2x2 matrix:\n");
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            scanf("%d", &matrix2[i][j]);
+        }
+    }
+
+    // Matrix multiplication logic
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            result[i][j] = 0; // Initialize each element of result to 0
+            for (k = 0; k < 2; k++) {
+                result[i][j] += matrix1[i][k] * matrix2[k][j];
+            }
+        }
+    }
+
+    // Display the resulting matrix
+    printf("The resulting matrix after multiplication is:\n");
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            printf("\t%d", result[i][j]);
+        }
+        printf("\n"); // New line for each row
+    }
+
+    return 0;
+} 
+////////////////////////////////////////////////////////////////////////////////////
+(b)Transpose of a given matrix 
+___________________________________________________________________________________
+#include <stdio.h>
+int main() {
+    int i, j, matrix[3][3], Transposed_matrix[3][3];
+    // Input the matrix elements
+    printf("Enter the elements of the matrix (3x3): \n");
+    printf("****************************************\n");
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+    
+// Display the original matrix
+    printf("The elements of the matrix are: \n");
+    printf("*********************************\n");
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            printf("\t%d", matrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    // Transpose the matrix
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            Transposed_matrix[i][j] = matrix[j][i];
+        }
+    }
+
+    // Display the transposed matrix
+    printf("The elements of the transposed matrix are: \n");
+    printf("*******************************************\n");
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            printf("\t%d", Transposed_matrix[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+
+
+
+
