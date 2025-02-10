@@ -1,0 +1,37 @@
+Q)Write a program in C to perform merging of two one-dimensional arrays, after taking all the necessary inputs from the user. 
+
+#include<stdio.h>
+int main(){
+	int arr1[03],arr2[03];
+	int n1,n2,i;
+	
+	printf("Enter the element number in first array:  ");
+	scanf("%d",&n1);
+	printf("Enter the elemet in first array : ");
+	for(i=0;i<n1;i++){
+		scanf("%d",&arr1[i]);
+	}
+	printf("Enter the element number in second array:  ");
+	scanf("%d",&n2);
+	printf("Enter the elemet in second array : ");
+	for(i=0;i<n2;i++){
+		scanf("%d",&arr2[i]);
+	}
+	
+	int merge_array[n1+n2];
+
+	for(i=0;i<n1;i++){
+		merge_array[i]=arr1[i];
+	}
+	for(i=0;i<n2;i++){
+		merge_array[n1+i]=arr2[i];
+	}
+	//print merge array
+	printf("\n************************************************\n");
+	printf("MERGE ARRAY IS : ");
+	for(i=0;i<n1+n2;i++){
+		printf("%d\t",merge_array[i]);
+	}
+	
+	return 0;
+}
