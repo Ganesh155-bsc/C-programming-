@@ -1,0 +1,56 @@
+Q) Write a program in C to implement stack operations using array and perform Insertion and Deletion operations. Show all possible exception/error cases.
+
+#include<stdio.h>
+#include<conio.h>
+#define maxsize 20
+int stack[maxsize],top=-1;
+int main(){
+	int choice;
+	do{
+	printf("\n*****Stack******\n");
+	printf("------------------------\n");
+	printf("01)push\n 02)pop\n 03)display\n 04)exit");
+	printf("-------------------------\n\n");
+	printf("Enter your choice: ");
+	scanf("%d",&choice);
+	
+	switch(choice){
+		case 1: push(); break;
+		case 2: pop(); break;
+		case 3: display(); break;
+		default :printf("Invalid choice");
+	}
+	}while(choice!=4);
+	return 0;
+}
+void push(){
+	int n;
+	if(top==maxsize-1) printf("Stack is overflow");
+	else{
+		printf("Enter an element :");
+		scanf("%d",&n);
+		top++;
+		stack[top]=n;
+	}
+}
+void display(){
+	int i;
+	if(top==-1) printf("Stack is empty");
+	else{
+		printf("\n Elemts of stacks: ");
+		for(i=top;i>=0;i--){
+			printf(" %d \t",stack[i]);
+			
+			
+		}
+	}
+}
+void pop(){
+	int n;
+	if(top==-1) printf("Stack is Empty");
+	else{
+		n=stack[top];
+		top--;
+		printf("poped element %d \n",n);
+	}
+}
