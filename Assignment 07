@@ -1,0 +1,216 @@
+Q)Write a program in C to create a single linked list and implement the following functions on it—
+a. Insert after a specific location 
+	b. Deletion at end 
+	c. Delete an element from a specified location. 
+	d. Count the number of nodes. 
+	e. Separate the linked list into odd numbered and even numbered list 
+	f. Display the list. 
+	
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+    int data;
+    struct node *next;
+};
+struct node *start = NULL, *temp = NULL, *newnode, *prev, *forw;
+
+void create_ll();
+void insert_after_location();
+void delete_from_location();
+void delete_last();
+void count_node();
+void separate_odd_even();
+void display_ll();
+
+int main() {
+    int choice;
+    do {
+        printf("\n***** Linked List Menu ******\n");
+        printf("01) Create linked list\n");
+        printf("02) Insert after specific location\n");
+        printf("03) Delete from last\n");
+        printf("04) Delete from specific location\n");
+        printf("05) Count total nodes\n");
+        printf("06) Separate into odd & even lists\n");
+        printf("07) Display linked list\n");
+        printf("08) Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: create_ll(); break;
+            case 2: insert_after_location(); break;
+            case 3: delete_last(); break;
+            case 4: delete_from_location(); break;
+            case 5: count_node(); break;
+            case 6: separate_odd_even(); break;
+            case 7: display_ll(); break;
+            case 8: printf("Exiting program.\n"); break;
+            default: printf("Invalid choice!\n");
+        }
+    } while (choice != 8);
+    return 0;
+}
+
+void create_ll() {
+    char ch;
+    int n;
+    printf("Enter an element: ");
+    scanf("%d", &n);
+    start = (struct node *)malloc(sizeof(struct node));
+    start->data = n;
+    start->next = NULL;
+    temp = start;
+    printf("Do you want to continue (Y/N)? ");
+    getchar();
+    ch = getchar();
+    while (ch == 'Y' || ch == 'y') {
+        printf("Enter next element: ");
+        scanf("%d", &n);
+        newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->data = n;
+        newnode->next = NULL;
+        temp->next = newnode;
+        temp = newnode;
+        printf("Do you want to continue (Y/N)? ");
+        getchar();
+        ch = getchar();
+    }
+}
+
+void insert_after_location() {
+    int pos, i = 1, n;
+    if (start == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    printf("Enter position after which to insert: ");
+    scanf("%d", &pos);
+    printf("Enter element to insert: ");
+    scanf("%d", &n);
+    
+    newnode = (struct node *)malloc(sizeof(struct node));
+    newnode->data = n;
+    newnode->next = NULL;
+    
+    temp = start;
+    while (i < pos && temp != NULL) {
+        temp = temp->next;
+        i++;
+    }
+    if (temp == NULL) {
+        printf("Invalid position!\n");
+        return;
+    }
+    newnode->next = temp->next;
+    temp->next = newnode;
+}
+
+void delete_from_location() {
+    int pos, i = 1;
+    if (start == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    printf("Enter position to delete: ");
+    scanf("%d", &pos);
+    temp = start;
+    if (pos == 1) {
+        start = start->next;
+        printf("Deleted node: %d\n", temp->data);
+        free(temp);
+        return;
+    }
+    while (i < pos - 1 && temp->next != NULL) {
+        temp = temp->next;
+        i++;
+    }
+    if (temp->next == NULL) {
+        printf("Invalid position!\n");
+        return;
+    }
+    struct node *del = temp->next;
+    temp->next = del->next;
+    printf("Deleted node: %d\n", del->data);
+    free(del);
+}
+
+void delete_last() {
+    if (start == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    temp = start;
+    if (temp->next == NULL) {
+        printf("Deleted node: %d\n", temp->data);
+        free(temp);
+        start = NULL;
+        return;
+    }
+    while (temp->next->next != NULL) {
+        temp = temp->next;
+    }
+    printf("Deleted node: %d\n", temp->next->data);
+    free(temp->next);
+    temp->next = NULL;
+}
+
+void count_node() {
+    int count = 0;
+    temp = start;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    printf("Total nodes: %d\n", count);
+}
+
+void separate_odd_even() {
+    struct node *odd = NULL, *even = NULL, *odd_tail = NULL, *even_tail = NULL;
+    temp = start;
+    while (temp != NULL) {
+        struct node *newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->data = temp->data;
+        newnode->next = NULL;
+        if (temp->data % 2 == 0) {
+            if (even == NULL) even = even_tail = newnode;
+            else {
+                even_tail->next = newnode;
+                even_tail = newnode;
+            }
+        } else {
+            if (odd == NULL) odd = odd_tail = newnode;
+            else {
+                odd_tail->next = newnode;
+                odd_tail = newnode;
+            }
+        }
+        temp = temp->next;
+    }
+    printf("Odd List: ");
+    temp = odd;
+    while (temp) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\nEven List: ");
+    temp = even;
+    while (temp) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+void display_ll() {
+    if (start == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    temp = start;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
