@@ -1,0 +1,108 @@
+Q) Write a program in C to apply the following sorting techniques on a list of numbers, as per user's choice
+  a.Insertion Sort
+  b.Selection Sort.
+  Show intermediate results between passes.
+
+
+#include <stdio.h>
+#define MAX 100
+
+void insertion_sort();
+void selection_sort();
+
+int main() {
+    int choice;
+    do {
+        printf("\n***** Sorting Technique ******\n");
+        printf("------------------------------\n");
+        printf("01) Insertion Sort\n02) Selection Sort\n03) Exit\n");
+        printf("------------------------------\n\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: insertion_sort(); break;
+            case 2: selection_sort(); break;
+            case 3: printf("Exiting program...\n"); break;
+            default: printf("Invalid choice. Please try again.\n");
+        }
+    } while (choice != 3);
+    return 0;
+}
+
+// Function to perform Insertion Sort with intermediate steps
+void insertion_sort() {
+    int arr[MAX], n, i, j, key;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    
+    printf("Enter the elements: ");
+    for (i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+
+    printf("\nInsertion Sort Process:\n");
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+
+        // Shift elements to the right
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+
+        // Display intermediate array
+        printf("After pass %d: ", i);
+        for (int k = 0; k < n; k++)
+            printf("%d ", arr[k]);
+        printf("\n");
+    }
+
+    printf("\nSorted Array: ");
+    for (i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+// Function to perform Selection Sort with intermediate steps
+void selection_sort() {
+    int arr[MAX], n, temp, i, j, index, min;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    
+    printf("Enter the elements: ");
+    for (i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+
+    printf("\nSelection Sort Process:\n");
+    for (i = 0; i < n - 1; i++) {
+        min = arr[i];
+        index = i;
+
+        for (j = i + 1; j < n; j++) {
+            if (min > arr[j]) {
+                min = arr[j];
+                index = j;
+            }
+        }
+
+        // Swap
+        temp = arr[i];
+        arr[i] = arr[index];
+        arr[index] = temp;
+
+        // Display intermediate array
+        printf("After pass %d: ", i + 1);
+        for (int k = 0; k < n; k++)
+            printf("%d ", arr[k]);
+        printf("\n");
+    }
+
+    printf("\nSorted Array: ");
+    for (i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
