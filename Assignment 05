@@ -1,0 +1,119 @@
+Q) Write a menu driven program in C to perform insertion and deletion operations in a queue. Check for exception conditions. 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the node structure
+struct node {
+    int data;
+    struct node *next;
+};
+
+// Define the queue structure
+struct queue {
+    struct node *front;
+    struct node *rear;
+};
+
+// Function prototypes
+void create_queue(struct queue *q);
+void insert(struct queue *q, int val);
+void delete_element(struct queue *q);
+void display(struct queue *q);
+
+int main() {
+    struct queue q;  // Define queue
+    create_queue(&q);  // Initialize queue
+
+    int val, option;
+    do {
+        printf("\n********** MAIN MENU **********\n");
+        printf("1. Insertion\n");
+        printf("2. Deletion\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("********************************\n");
+        printf("Enter your option: ");
+        scanf("%d", &option);
+
+        switch (option) {
+            case 1:
+                printf("Enter the number to be inserted in the queue: ");
+                scanf("%d", &val);
+                insert(&q, val);
+                break;
+            case 2:
+                delete_element(&q);
+                break;
+            case 3:
+                display(&q);
+                break;
+            case 4:
+                printf("Exiting the program.\n");
+                break;
+            default:
+                printf("Invalid option! Please try again.\n");
+        }
+    } while (option != 4);
+
+    return 0;
+}
+
+// Function to initialize the queue
+void create_queue(struct queue *q) {
+    q->front = NULL;
+    q->rear = NULL;
+}
+
+// Function to insert an element into the queue
+void insert(struct queue *q, int val) {
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    if (!ptr) {
+        printf("Memory allocation failed.\n");
+        return;
+    }
+    ptr->data = val;
+    ptr->next = NULL;
+
+    if (q->front == NULL) {  // If the queue is empty
+        q->front = ptr;
+        q->rear = ptr;
+    } else {  // If the queue is not empty
+        q->rear->next = ptr;
+        q->rear = ptr;
+    }
+    printf("%d has been inserted into the queue.\n", val);
+}
+
+// Function to delete an element from the queue
+void delete_element(struct queue *q) {
+    if (q->front == NULL) {  // Check for underflow
+        printf("Queue Underflow! Cannot delete element.\n");
+        return;
+    }
+
+    struct node *ptr = q->front;
+    printf("The value being deleted is: %d\n", ptr->data);
+
+    q->front = q->front->next;
+    if (q->front == NULL) {  // If the queue becomes empty
+        q->rear = NULL;
+    }
+    free(ptr);
+}
+
+// Function to display the elements of the queue
+void display(struct queue *q) {
+    if (q->front == NULL) {  // Check if the queue is empty
+        printf("QUEUE IS EMPTY.\n");
+        return;
+    }
+
+    struct node *ptr = q->front;
+    printf("The elements in the queue are: ");
+    while (ptr != NULL) {
+        printf("%d ", ptr->data);
+        ptr = ptr->next;
+    }
+    printf("\n");
+}
