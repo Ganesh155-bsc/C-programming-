@@ -15,6 +15,7 @@ void delete_middle();
 void display_ll();
 void count_node();
 void searching_ll();
+void reverse_ll();
 int main(){
 	int choice;
 	do{
@@ -30,7 +31,8 @@ int main(){
 	printf("08)Dsiplay_ll\n");
 	printf("09)Count Total nodes\n");
 	printf("10)Seraching_ll\n");
-	printf("11)Exit\n");
+	printf("11)reverse_ll\n");
+	printf("12)Exit\n");
 	printf("-------------------------\n\n");
 	printf("Enter your choice: ");
 	scanf("%d",&choice);
@@ -45,16 +47,17 @@ int main(){
 		case 7:	delete_middle();	break;
 		case 8:	display_ll();	break;
 		case 9:	count_node();	break;
-		case 10: searching_ll();	break;	
+		case 10: searching_ll();	break;
+		case 11: reverse_ll();	break;
 		default :printf("Invalid choice");
 	}
-	}while(choice!=11);
+	}while(choice!=12);
 	return 0;
 }
 void create_ll(){
 	char ch;
 	int n;
-	printf("Enter an element: \t");
+	printf("Enter an element:\t");
 	scanf("%d",&n);
 	start=(struct node *)malloc(sizeof(struct node));
 	start->data=n;
@@ -201,4 +204,15 @@ void searching_ll(){
 		if(flag==1)	printf("Search is success");		
 		else	printf("Search is unsuccess");	
 	}
+}
+void reverse_ll() {
+    struct node *prev = NULL, *current = start, *next = NULL;
+    while (current != NULL) {
+        next=current->next;  // Store the next node
+        current->next = prev;  // Reverse the link
+        prev=current;        // Move prev to the current node
+        current=next;        // Move to the next node
+    }
+    start=prev;  // Update start to point to the new head
+    printf("Linked list reversed successfully!\n");
 }
