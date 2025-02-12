@@ -1,0 +1,124 @@
+/*Q)Write a program in C to create a doubly linked list and perform the following operations:
+    a.Display
+    b.Deleting a node from any position.          */
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node {
+    struct node *prev;
+    int data;
+    struct node *next;
+};
+
+struct node *start = NULL, *temp = NULL, *newnode, *prev, *forw, *next;
+
+void create_ll();
+void delete_any_position(); 
+void display_ll();
+
+int main() {
+    int choice;
+    do {
+        printf("\n***** Doubly Linked List Menu******\n");
+        printf("------------------------\n");
+        printf("01) Create linked list\n");
+        printf("02) Delete from any position\n"); 
+        printf("03) Display linked list\n");
+        printf("04) Exit\n");
+        printf("-------------------------\n\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1: create_ll(); break;
+            case 2: delete_any_position(); break;  // New case for deleting from any position
+            case 3: display_ll(); break;
+            default: printf("Invalid choice\n");
+        }
+    } while(choice != 4);
+    return 0;
+}
+
+void create_ll() {
+    char ch;
+    int n;
+    printf("Enter an element: ");
+    scanf("%d", &n);
+
+    // Create the first node
+    start = (struct node *)malloc(sizeof(struct node));
+    start->prev = NULL;
+    start->data = n;
+    start->next = NULL;
+    temp = start;
+
+    printf("\nDo you want to continue (y/n)? ");
+    ch = getche(); // Reads user input for continuation
+
+    while (ch == 'Y' || ch == 'y') {
+        printf("\nEnter next element: ");
+        scanf("%d", &n);
+
+        // Allocate memory for a new node
+        newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->prev = temp; // Link new node's prev to the current last node
+        newnode->data = n;
+        newnode->next = NULL;
+        
+        temp->next = newnode; // Link the current last node to the new node
+        temp = newnode;       // Move temp to the new last node
+
+        printf("\nDo you want to continue (y/n)? ");
+        ch = getche();
+    }
+}
+void display_ll() {
+    if (start == NULL) {
+        printf("List is already empty\n");
+        return;
+    }
+
+    // Forward traversal
+    printf("Forward Traversal: ");
+    temp = start;
+    while (temp != NULL) {
+        printf("%d\t", temp->data);
+        if (temp->next == NULL) {
+            break; // Stop at the last node to use it for backward traversal
+        }
+        temp = temp->next;
+    }
+    // Backward traversal
+    printf("\nBackward Traversal: ");
+    while (temp != NULL) {
+        printf("%d\t", temp->data);
+        temp = temp->prev;
+    }
+    printf("\n");
+}
+void delete_any_position() {  // New function for deleting a node from any position
+    int pos, i = 1;
+    if(start == NULL) {
+        printf("List is empty\n");
+    } else {
+        printf("Enter the position to delete from: ");
+        scanf("%d", &pos);
+        temp = start;
+        while(i < pos && temp != NULL) {
+            temp = temp->next;
+            i++;
+        }
+        if(temp != NULL) {
+            prev = temp->prev;
+            next = temp->next;
+            if(prev != NULL) prev->next = next;
+            if(next != NULL) next->prev = prev;
+            printf("Deleted node %d\n", temp->data);
+            free(temp);
+        } else {
+            printf("Invalid position\n");
+        }
+    }
+}
