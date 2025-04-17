@@ -1,0 +1,21 @@
+Q) Write a program in C to search an element (number) from a set of numbers using Linear Search.
+
+#include<stdio.h>
+#define MAX 5
+int main(){
+	int arr[MAX],i,search=0;
+	printf("Enter element in array: ");
+	for(i=0;i<5;i++)	scanf("%d",&arr[i]);
+	printf("Enter the number search to be element: ");
+	scanf("%d",&search);
+	
+	for(i=0;i<5;i++){
+		if(arr[i]==search){
+			printf("Element found at position %d (index %d)\n",i+1,i);
+            search=1;
+            break;
+		}
+	}	
+	if(search==0)	printf("Element are not found");
+	return 0;
+}
