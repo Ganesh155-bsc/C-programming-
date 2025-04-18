@@ -1,0 +1,209 @@
+Q) Write a program in C to create a Binary Search Tree and perform the following
+operations—
+        a.In-order traversal .
+        b.Pre-order traversal.
+        c.Post -order traversal.
+        d.Searching a specific item.
+        e.Count the number of leaf nodes.
+        f.Count the number of leaf and non-leaf nodes.
+        g.Deleting a node from any position.
+        h.Display its level by level traversal.
+        i.Display
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct tree {
+    struct tree *left;
+    int data;
+    struct tree *right;
+};
+
+// Create a new node
+struct tree *createNode(int data) {
+    struct tree *root = (struct tree *)malloc(sizeof(struct tree));
+    root->data = data;
+    root->left = root->right = NULL;
+    return root;
+}
+
+// In-order traversal
+void inorderTree(struct tree *root) {
+    if (root != NULL) {
+        inorderTree(root->left);
+        printf("%d\t", root->data);
+        inorderTree(root->right);
+    }
+}
+
+// Pre-order traversal
+void PreorderTree(struct tree *root) {
+    if (root != NULL) {
+        printf("%d\t", root->data);
+        PreorderTree(root->left);
+        PreorderTree(root->right);
+    }
+}
+
+// Post-order traversal
+void PostorderTree(struct tree *root) {
+    if (root != NULL) {
+        PostorderTree(root->left);
+        PostorderTree(root->right);
+        printf("%d\t", root->data);
+    }
+}
+
+// Search for an item
+int searchItem(struct tree *root, int item) {
+    if (root == NULL) return 0;
+    if (root->data == item) return 1;
+    return searchItem(root->left, item) || searchItem(root->right, item);
+}
+
+// Count leaf nodes
+int countingLeaf(struct tree *root) {
+    if (root == NULL) return 0;
+    if (root->left == NULL && root->right == NULL) return 1;
+    return countingLeaf(root->left) + countingLeaf(root->right);
+}
+
+// Count non-leaf nodes
+int countNonLeafNodes(struct tree *root) {
+    if (root == NULL || (root->left == NULL && root->right == NULL)) return 0;
+    return 1 + countNonLeafNodes(root->left) + countNonLeafNodes(root->right);
+}
+
+// Delete a leaf node (basic version)
+struct tree* deleteLeafNode(struct tree *root, int key) {
+    if (root == NULL) return NULL;
+
+    if (root->left != NULL && root->left->data == key && 
+        root->left->left == NULL && root->left->right == NULL) {
+        free(root->left);
+        root->left = NULL;
+        printf("Leaf node %d deleted.\n", key);
+        return root;
+    }
+
+    if (root->right != NULL && root->right->data == key && 
+        root->right->left == NULL && root->right->right == NULL) {
+        free(root->right);
+        root->right = NULL;
+        printf("Leaf node %d deleted.\n", key);
+        return root;
+    }
+
+    root->left = deleteLeafNode(root->left, key);
+    root->right = deleteLeafNode(root->right, key);
+    return root;
+}
+
+// Level order traversal using queue
+void levelOrder(struct tree *root) {
+    if (root == NULL) return;
+
+    struct tree *queue[100];
+    int front = 0, rear = 0;
+
+    queue[rear++] = root;
+
+    while (front < rear) {
+        struct tree *curr = queue[front++];
+        printf("%d\t", curr->data);
+
+        if (curr->left != NULL)
+            queue[rear++] = curr->left;
+        if (curr->right != NULL)
+            queue[rear++] = curr->right;
+    }
+}
+
+int main() {
+    struct tree *n1 = createNode(10);
+    struct tree *n2 = createNode(20);
+    struct tree *n3 = createNode(30);
+    struct tree *n4 = createNode(40);
+    struct tree *n5 = createNode(50);
+    struct tree *n6 = createNode(60);
+
+    // Building tree
+    n1->left = n2;
+    n1->right = n3;
+    n2->left = n4;
+    n2->right = n5;
+    n3->left = n6;
+
+    int key, leafnode, nonLeafCount;
+    int choice;
+
+    while(1){
+    	printf("\n***** Binary Tree Menu *****\n");
+        printf("01) In-order traversal\n");
+        printf("02) Pre-order traversal\n");
+        printf("03) Post-order traversal\n");
+        printf("04) Search a specific item\n");
+        printf("05) Count the number of leaf nodes\n");
+        printf("06) Count leaf and non-leaf nodes\n");
+        printf("07) Delete a leaf node\n");
+        printf("08) Level-order traversal\n");
+        printf("09) Display entire tree (preorder)\n");
+        printf("10) Exit\n");
+        printf("-----------------------------\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("In-order: ");
+                inorderTree(n1);
+                break;
+            case 2:
+                printf("Pre-order: ");
+                PreorderTree(n1);
+                break;
+            case 3:
+                printf("Post-order: ");
+                PostorderTree(n1);
+                break;
+            case 4:
+                printf("Enter element to search: ");
+                scanf("%d", &key);
+                if (searchItem(n1, key))
+                    printf("%d is present in the tree.\n", key);
+                else
+                    printf("%d is not found in the tree.\n", key);
+                break;
+            case 5:
+                leafnode = countingLeaf(n1);
+                printf("Number of leaf nodes: %d\n", leafnode);
+                break;
+            case 6:
+                leafnode = countingLeaf(n1);
+                nonLeafCount = countNonLeafNodes(n1);
+                printf("Number of leaf nodes: %d\n", leafnode);
+                printf("Number of non-leaf nodes: %d\n", nonLeafCount);
+                break;
+            case 7:
+                printf("Enter leaf node to delete: ");
+                scanf("%d", &key);
+                n1 = deleteLeafNode(n1, key);
+                break;
+            case 8:
+                printf("Level-order traversal: ");
+                levelOrder(n1);
+                break;
+            case 9:
+                printf("Displaying full tree (Pre-order): ");
+                PreorderTree(n1);
+                break;
+            case 10:
+                printf("Exiting program.\n");
+                break;
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+	}
+    return 0;
+}
+ 
