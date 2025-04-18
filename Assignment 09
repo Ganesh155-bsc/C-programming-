@@ -1,0 +1,80 @@
+Q) Write a program in C to reverse a single linked list.
+
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+	int data;
+	struct node *next;
+};
+struct node *start=NULL,*temp=NULL,*newnode,*next;
+void create_ll();
+void display_ll();
+void reverse_ll();
+int main(){
+	int choice;
+	do{
+	printf("\n*****Linked List Menu******\n");
+	printf("------------------------\n");
+	printf("01)Create linkeds list\n");
+	printf("02)Dsiplay_ll\n");
+	printf("03)reverse_ll\n");
+	printf("04)Exit\n");
+	printf("-------------------------\n\n");
+	printf("Enter your choice: ");
+	scanf("%d",&choice);
+	
+	switch(choice){
+		case 1: create_ll(); break;
+		case 2:	display_ll();	break;
+		case 3: reverse_ll();	break;
+		default :printf("Invalid choice");
+	}
+	}while(choice!=12);
+	return 0;
+}
+void create_ll(){
+	char ch;
+	int n;
+	printf("Enter an element:\t");
+	scanf("%d",&n);
+	start=(struct node *)malloc(sizeof(struct node));
+	start->data=n;
+	start->next=NULL;
+	temp=start;
+	printf("\nDo you Want to continue: ");
+	ch=getch();
+	while(ch=='Y'||ch=='y'){
+		printf("\nEnter next element: ");
+		scanf("%d",&n);
+		newnode=(struct node *)malloc(sizeof(struct node));
+		newnode->data=n;
+		newnode->next=NULL;
+		temp->next=newnode;
+		temp=temp->next;
+		printf("\nDo you Want to continue: ");
+		ch=getche();		
+	}	
+}
+void display_ll(){
+	if(start==NULL)	printf("List is alredy empty");
+	else{
+		temp=start;
+		while(temp!=NULL){
+			printf("%d\t",temp->data);
+			temp=temp->next;
+		}
+	}
+}
+void reverse_ll() {
+    struct node *prev = NULL, *current = start, *next = NULL;
+    while (current != NULL) {
+        next=current->next;  // Store the next node
+        current->next = prev;  // Reverse the link
+        prev=current;        // Move prev to the current node
+        current=next;        // Move to the next node
+    }
+    start=prev;  // Update start to point to the new head
+    printf("Linked list reversed successfully!\n");
+}: 
+ 
+
