@@ -1,0 +1,99 @@
+Q) Write a C program to convert any given infix expression to its corresponding postfix expression. 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#define SIZE 100
+
+char stack[SIZE];
+int top = -1;
+
+// Push function
+void push(char c) {
+    if (top >= SIZE - 1)
+        printf("Stack Overflow\n");
+    else
+        stack[++top] = c;
+}
+
+// Pop function
+char pop() {
+    if (top == -1)
+        return '\0';
+    else
+        return stack[top--];
+}
+
+// Peek function
+char peek() {
+    if (top == -1)
+        return '\0';
+    return stack[top];
+}
+
+// Check precedence of operators
+int precedence(char op) {
+    switch(op) {
+        case '^': return 3;
+        case '*':
+        case '/': return 2;
+        case '+':
+        case '-': return 1;
+        default : return 0;
+    }
+}
+
+// Check if character is operator
+int isOperator(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^');
+}
+
+// Main conversion function
+void infixToPostfix(char infix[]) {
+    char postfix[SIZE];
+    int i = 0, j = 0;
+    char symbol;
+
+    while (infix[i] != '\0') {
+        symbol = infix[i];
+
+        if (isalnum(symbol)) {
+            postfix[j++] = symbol;
+        } else if (symbol == '(') {
+            push(symbol);
+        } else if (symbol == ')') {
+            while (peek() != '(' && top != -1) {
+                postfix[j++] = pop();
+            }
+            pop(); // remove '(' from stack
+        } else if (isOperator(symbol)) {
+            while (precedence(peek()) >= precedence(symbol)) {
+                postfix[j++] = pop();
+            }
+            push(symbol);
+        }
+
+        i++;
+    }
+
+    while (top != -1) {
+        postfix[j++] = pop();
+    }
+
+    postfix[j] = '\0';
+    printf("Postfix Expression: %s\n", postfix);
+}
+
+// Main function
+int main() {
+    char infix[SIZE];
+
+    printf("Enter an infix expression: ");
+    scanf("%s", infix);
+
+    infixToPostfix(infix);
+
+    return 0;
+}
