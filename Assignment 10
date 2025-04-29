@@ -1,0 +1,118 @@
+Q) Write a program in C to swap the Kth and (K+1)th node in a singly linked list. The value of the k should be entered by the user. 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *start = NULL, *temp = NULL, *newnode;
+
+void create_ll();
+void display_ll();
+void swap_kth_nodes(int k);
+
+int main() {
+    int choice, k;
+    do {
+        printf("\n***** Linked List Menu *****\n");
+        printf("01) Create linked list\n");
+        printf("02) Display linked list\n");
+        printf("03) Swap Kth and (K+1)th nodes\n");
+        printf("04) Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: create_ll(); break;
+            case 2: display_ll(); break;
+            case 3:
+                printf("Enter the value of K: ");
+                scanf("%d", &k);
+                swap_kth_nodes(k);
+                break;
+            case 4: printf("Exiting program.\n"); break;
+            default: printf("Invalid choice!\n");
+        }
+    } while (choice != 4);
+    return 0;
+}
+
+void create_ll() {
+    int n;
+    char ch;
+    printf("Enter an element: ");
+    scanf("%d", &n);
+    start = (struct node *)malloc(sizeof(struct node));
+    start->data = n;
+    start->next = NULL;
+    temp = start;
+    printf("Do you want to continue (Y/N)? ");
+    getchar(); // to clear the buffer
+    ch = getchar();
+    while (ch == 'Y' || ch == 'y') {
+        printf("Enter next element: ");
+        scanf("%d", &n);
+        newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->data = n;
+        newnode->next = NULL;
+        temp->next = newnode;
+        temp = newnode;
+        printf("Do you want to continue (Y/N)? ");
+        getchar(); // to clear the buffer
+        ch = getchar();
+    }
+}
+
+void display_ll() {
+    if (start == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    temp = start;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+void swap_kth_nodes(int k) {
+    if (start == NULL || k <= 0) {
+        printf("Invalid input or empty list\n");
+        return;
+    }
+
+    struct node *prev = NULL, *curr = start;
+    int i = 1;
+
+    // Traverse to the Kth node
+    while (curr != NULL && i < k) {
+        prev = curr;
+        curr = curr->next;
+        i++;
+    }
+
+    if (curr == NULL || curr->next == NULL) {
+        printf("Invalid position, unable to swap\n");
+        return;
+    }
+
+    struct node *next_node = curr->next;
+    
+    // Swap the Kth and (K+1)th nodes
+    if (prev == NULL) {
+        // If K is 1, the first node is being swapped
+        start = next_node;
+    } else {
+        prev->next = next_node;
+    }
+    
+    curr->next = next_node->next;
+    next_node->next = curr;
+
+    printf("Nodes swapped successfully!\n");
+}
+ 
