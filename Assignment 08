@@ -1,0 +1,113 @@
+Q) Write a program in C to find the union and intersection of elements stored in two singly linked lists. 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *list1 = NULL, *list2 = NULL;
+
+struct node* create_node(int value) {
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    newnode->data = value;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void insert_end(struct node **head, int value) {
+    struct node *newnode = create_node(value);
+    if (*head == NULL) {
+        *head = newnode;
+    } else {
+        struct node *temp = *head;
+        while (temp->next != NULL)
+            temp = temp->next;
+        temp->next = newnode;
+    }
+}
+
+int exists(struct node *head, int value) {
+    while (head != NULL) {
+        if (head->data == value)
+            return 1;
+        head = head->next;
+    }
+    return 0;
+}
+
+struct node* find_union(struct node *head1, struct node *head2) {
+    struct node *result = NULL;
+    while (head1 != NULL) {
+        if (!exists(result, head1->data))
+            insert_end(&result, head1->data);
+        head1 = head1->next;
+    }
+    while (head2 != NULL) {
+        if (!exists(result, head2->data))
+            insert_end(&result, head2->data);
+        head2 = head2->next;
+    }
+    return result;
+}
+
+struct node* find_intersection(struct node *head1, struct node *head2) {
+    struct node *result = NULL;
+    while (head1 != NULL) {
+        if (exists(head2, head1->data) && !exists(result, head1->data))
+            insert_end(&result, head1->data);
+        head1 = head1->next;
+    }
+    return result;
+}
+
+void display(struct node *head) {
+    if (head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    int n, val, i;
+
+    printf("Enter number of elements in List 1: ");
+    scanf("%d", &n);
+    printf("Enter elements for List 1:\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &val);
+        insert_end(&list1, val);
+    }
+
+    printf("Enter number of elements in List 2: ");
+    scanf("%d", &n);
+    printf("Enter elements for List 2:\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &val);
+        insert_end(&list2, val);
+    }
+
+    printf("\nList 1: ");
+    display(list1);
+
+    printf("List 2: ");
+    display(list2);
+
+    struct node *union_list = find_union(list1, list2);
+    printf("\nUnion: ");
+    display(union_list);
+
+    struct node *intersection_list = find_intersection(list1, list2);
+    printf("Intersection: ");
+    display(intersection_list);
+
+    return 0;
+}
+ 
