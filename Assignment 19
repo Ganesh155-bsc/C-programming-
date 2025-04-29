@@ -1,0 +1,97 @@
+Q) Write a program in C to create a Binary Search Tree (BST) and include in-order traversal operation (non-recursive) and pre-order traversal operation (recursive). 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct tree {
+    int data;
+    struct tree *left, *right;
+};
+
+// Create a new node
+struct tree *createNode(int data) {
+    struct tree *newNode = (struct tree *)malloc(sizeof(struct tree));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Insert node in BST
+struct tree *insertBST(struct tree *root, int data) {
+    if (root == NULL)
+        return createNode(data);
+
+    if (data < root->data)
+        root->left = insertBST(root->left, data);
+    else if (data > root->data)
+        root->right = insertBST(root->right, data);
+
+    return root;
+}
+
+// Non-recursive In-order Traversal
+void inorderNonRecursive(struct tree *root) {
+    struct tree *stack[100];
+    int top = -1;
+    struct tree *curr = root;
+
+    while (curr != NULL || top != -1) {
+        while (curr != NULL) {
+            stack[++top] = curr;
+            curr = curr->left;
+        }
+
+        curr = stack[top--];
+        printf("%d\t", curr->data);
+        curr = curr->right;
+    }
+}
+
+// Recursive Pre-order Traversal
+void preorderRecursive(struct tree *root) {
+    if (root != NULL) {
+        printf("%d\t", root->data);
+        preorderRecursive(root->left);
+        preorderRecursive(root->right);
+    }
+}
+
+int main() {
+    struct tree *root = NULL;
+    int choice, value;
+
+    while (1) {
+        printf("\n**** BST Menu ****\n");
+        printf("1) Insert node\n");
+        printf("2) Non-recursive In-order Traversal\n");
+        printf("3) Recursive Pre-order Traversal\n");
+        printf("4) Exit\n");
+        printf("-------------------\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+                root = insertBST(root, value);
+                break;
+            case 2:
+                printf("In-order (Non-recursive): ");
+                inorderNonRecursive(root);
+                break;
+            case 3:
+                printf("Pre-order (Recursive): ");
+                preorderRecursive(root);
+                break;
+            case 4:
+                printf("Exiting program.\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+    }
+
+    return 0;
+}
+ 
