@@ -1,0 +1,85 @@
+Q) Write a program in C to create a singly linked list in such a way so that elements will be placed in ascending order during the creation of list. 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *start = NULL;
+
+void insert_in_order(int n);
+void create_sorted_ll();
+void display_ll();
+
+int main() {
+    int choice;
+    do {
+        printf("\n***** Sorted Linked List Menu *****\n");
+        printf("1) Create linked list (Ascending Order)\n");
+        printf("2) Display linked list\n");
+        printf("3) Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        
+        switch (choice) {
+            case 1: create_sorted_ll(); break;
+            case 2: display_ll(); break;
+            case 3: printf("Exiting program.\n"); break;
+            default: printf("Invalid choice!\n");
+        }
+    } while (choice != 3);
+    return 0;
+}
+
+// Inserts a node in ascending order
+void insert_in_order(int n) {
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    newnode->data = n;
+    newnode->next = NULL;
+
+    // If list is empty or new node should be at beginning
+    if (start == NULL || n < start->data) {
+        newnode->next = start;
+        start = newnode;
+    } else {
+        struct node *temp = start;
+        while (temp->next != NULL && temp->next->data < n) {
+            temp = temp->next;
+        }
+        newnode->next = temp->next;
+        temp->next = newnode;
+    }
+}
+
+// Handles repeated insertion for creating the list
+void create_sorted_ll() {
+    int n;
+    char ch;
+    do {
+        printf("Enter element to insert: ");
+        scanf("%d", &n);
+        insert_in_order(n);
+        printf("Do you want to add another element (Y/N)? ");
+        getchar(); // to consume leftover newline
+        ch = getchar();
+    } while (ch == 'Y' || ch == 'y');
+}
+
+// Display the list
+void display_ll() {
+    if (start == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    struct node *temp = start;
+    printf("Sorted Linked List: ");
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+ 
