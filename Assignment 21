@@ -1,0 +1,75 @@
+Q) Write a program in C to perform non-recursive Quick Sort of an array of integers. 
+
+#include <stdio.h>
+#define MAX 100
+
+// Function to swap two elements
+void swap(int *a, int *b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+// Partition function
+int partition(int arr[], int low, int high) {
+	int pivot = arr[high],j;
+	int i = low - 1;
+	for (j = low; j < high; j++) {
+		if (arr[j] < pivot) {
+			i++;
+			swap(&arr[i], &arr[j]);
+		}
+	}
+	swap(&arr[i + 1], &arr[high]);
+	return i + 1;
+}
+
+// Non-recursive Quick Sort using stack
+void quickSort(int arr[], int n) {
+	int stack[MAX];
+	int top = -1;
+
+	// Push initial values of low and high to stack
+	stack[++top] = 0;
+	stack[++top] = n - 1;
+
+	while (top >= 0) {
+		int high = stack[top--];
+		int low = stack[top--];
+
+		int p = partition(arr, low, high);
+
+		// Push left side to stack
+		if (p - 1 > low) {
+			stack[++top] = low;
+			stack[++top] = p - 1;
+		}
+
+		// Push right side to stack
+		if (p + 1 < high) {
+			stack[++top] = p + 1;
+			stack[++top] = high;
+		}
+	}
+}
+
+int main() {
+	int arr[MAX], n,i;
+
+	printf("Enter number of elements: ");
+	scanf("%d", &n);
+
+	printf("Enter elements: ");
+	for ( i = 0; i < n; i++)
+		scanf("%d", &arr[i]);
+
+	quickSort(arr, n);
+
+	printf("Sorted array: ");
+	for ( i = 0; i < n; i++)
+		printf("%d ", arr[i]);
+
+	return 0;
+}
+ 
+
