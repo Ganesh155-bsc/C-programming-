@@ -1,0 +1,67 @@
+Q) Write a program in C to evaluate a postfix expression. The postfix expression should be entered by the user. 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX 100
+
+int stack[MAX];
+int top = -1;
+
+// Push function
+void push(int val) {
+    if (top >= MAX - 1) {
+        printf("Stack Overflow\n");
+    } else {
+        stack[++top] = val;
+    }
+}
+
+// Pop function
+int pop() {
+    if (top < 0) {
+        printf("Stack Underflow\n");
+        return -1;
+    } else {
+        return stack[top--];
+    }
+}
+
+// Evaluate postfix expression
+int evaluatePostfix(char *exp) {
+    int i = 0;
+    while (exp[i]) {
+        if (isdigit(exp[i])) {
+            // Convert character to integer and push
+            push(exp[i] - '0');
+        } else {
+            // It's an operator
+            int val2 = pop();
+            int val1 = pop();
+            switch (exp[i]) {
+                case '+': push(val1 + val2); break;
+                case '-': push(val1 - val2); break;
+                case '*': push(val1 * val2); break;
+                case '/': push(val1 / val2); break;
+                default:
+                    printf("Invalid operator %c\n", exp[i]);
+                    return -1;
+            }
+        }
+        i++;
+    }
+    return pop();
+}
+
+int main() {
+    char postfix[MAX];
+    printf("Enter a postfix expression (e.g. 23*54*+9-): ");
+    scanf("%s", postfix);
+
+    int result = evaluatePostfix(postfix);
+    printf("Result of postfix expression = %d\n", result);
+    return 0;
+}
+ 
